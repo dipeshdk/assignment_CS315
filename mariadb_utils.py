@@ -42,20 +42,20 @@ def runMariaDB(csvA, csvB, i):
     loadcsvA(csvA, cur, con)
     loadcsvB(csvB, cur, con)
     
-def query1(cur, con):
-    cur.execute("SELECT * FROM A WHERE A1 <= 50;")
-    cur.fetchall()
+# def query1(cur, con):
+#     cur.execute("SELECT * FROM A WHERE A1 <= 50;")
+#     cur.fetchall()
 
-def query2(cur, con):
-    cur.execute("SELECT * FROM B ORDER BY B3;")
-    cur.fetchall()
+# def query2(cur, con):
+#     cur.execute("SELECT * FROM B ORDER BY B3;")
+#     cur.fetchall()
 
-def query3(cur, con):
-    cur.execute("SELECT COUNT(*)/COUNT(DISTINCT B2) FROM B")
-    cur.fetchall()
+# def query3(cur, con):
+#     cur.execute("SELECT COUNT(*)/COUNT(DISTINCT B2) FROM B")
+#     cur.fetchall()
 
-def query4(cur, con):
-    cur.execute("SELECT B1, B2, B3, A2 FROM INNER JOIN A, B; ;")
-    cur.fetchall()
+# def query4(cur, con):
+#     cur.execute("SELECT B1, B2, B3, A2 FROM INNER JOIN A, B; ;")
+#     cur.fetchall()
 
 

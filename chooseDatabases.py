@@ -1,7 +1,6 @@
-import time
-
 from mongodb_utils import runMongoDB
 from sqlite3_utils import runsqlite3
+from mariadb_utils import runMariaDB
 
 rollNumber = [2,4,9]
 suffix = []
@@ -27,14 +26,16 @@ for i in range(len(suffix)):
 
 for i in range(len(databases)):
     csvA, csvB = databases[i].strip("()").split(",")
-    print(csvA, csvB)
+    # print(csvA, csvB)
     # load these databases in sqlite3
     runsqlite3(csvA, csvB, i)
     # load these databases in mariadb(without index)
-    runMongoDB(csvA, csvB, i)
+    # runMongoDB(csvA, csvB, i)
     # load these databases in mariadb(with index)
+    # runMariaDB(csvA, csvB, i)
     # load these databases in mongodb
 
 # csvA, csvB = databases[0].strip("()").split(",")
-# runMongoDB(csvA, csvB, 0)
+# # runMongoDB(csvA, csvB, 0)
 # runsqlite3(csvA, csvB, 0)
+# # runMariaDB(csvA, csvB, 0)

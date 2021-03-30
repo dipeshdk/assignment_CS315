@@ -2,3 +2,5 @@ venv
 sqliteDB*
 
 __pycache__/
+output*.txt
+test*.txt
