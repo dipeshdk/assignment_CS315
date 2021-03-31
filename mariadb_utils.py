@@ -9,7 +9,7 @@ def connectMariaDB(db):
                         host = "localhost",
                         port=3306)
     cur = con.cursor()
-    cur.execute(f"DROP DATABASE {db};")
+    cur.execute(f"DROP DATABASE IF EXISTS {db};")
     cur.execute(f"CREATE DATABASE {db};")
     cur.execute(f"USE {db};")
     cur.execute("DROP TABLE IF EXISTS A;")

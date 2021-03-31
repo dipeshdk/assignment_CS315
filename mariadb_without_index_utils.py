@@ -9,14 +9,13 @@ def connectMariaDB(db):
                         host = "localhost",
                         port=3306)
     cur = con.cursor()
-    cur.execute(f"DROP DATABASE {db};")
+    cur.execute(f"DROP DATABASE IF EXISTS {db};")
     cur.execute(f"CREATE DATABASE {db};")
     cur.execute(f"USE {db};")
     cur.execute("DROP TABLE IF EXISTS A;")
     cur.execute("DROP TABLE IF EXISTS B;")
-    cur.execute("CREATE TABLE A (A1 INTEGER PRIMARY KEY, A2 TEXT);")
-    cur.execute("CREATE TABLE B (B1 INTEGER PRIMARY KEY, B2 INTEGER, B3 VARCHAR(255), FOREIGN KEY (B2) REFERENCES A(A1) ON DELETE CASCADE);")
-    cur.execute("CREATE INDEX Bi on B(B3);")
+    cur.execute("CREATE TABLE A (A1 INTEGER, A2 TEXT);")
+    cur.execute("CREATE TABLE B (B1 INTEGER, B2 INTEGER, B3 VARCHAR(255));")
     cur.execute(f"SET profiling = 1;")
     con.commit()
     return cur,con
@@ -40,9 +39,9 @@ def loadcsvB(csvfile, cur, con):
     con.commit()
 
 
-def runMariaDB(csvA, csvB, i):
-    db = "mariaDB" + str(i)
-    fname = "output_mariaDB" + str(i)
+def runMariaDbWithoutInd(csvA, csvB, i):
+    db = "mariaDBWithoutInd" + str(i)
+    fname = "output_mariaDBWithoutInd" + str(i)
     cur, con = connectMariaDB(db)
     loadcsvA(csvA, cur, con)
     loadcsvB(csvB, cur, con)
