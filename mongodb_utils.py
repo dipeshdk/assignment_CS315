@@ -5,6 +5,7 @@ DATABASE_PATH = "./Databases/"
 
 def connectMongoDB(dbname):
     client = pymongo.MongoClient("mongodb://localhost:27017/")
+    client.drop_database(dbname)
     db = client[dbname]
     return db
 
@@ -16,39 +17,46 @@ def csv_to_json(filename):
 
 def runMongoDB(csvA, csvB, i):
     dbname = "mongoDB" + str(i)
+    fname = "output_mongoDB" + str(i)
     db = connectMongoDB(dbname)
-    db["A"].drop()
-    db["B"].drop()
     collectionA = db["A"]
     collectionB = db["B"]
     collectionA.insert_many(csv_to_json(DATABASE_PATH+csvA))
     collectionB.insert_many(csv_to_json(DATABASE_PATH+csvB))
-    query1(collectionA)
-    query2(collectionB)
-    query3(collectionB)
-    query4(db)
+    db.set_profiling_level(2)
+    query1(db, fname)
+    query2(db, fname)
+    query3(db, fname)
+    query4(db, fname)
 
 
-def query1(collectionA):
-    q1time = collectionA.find({"A1": {"$lte":50}}).explain()["executionStats"]["executionTimeMillis"]
+def query1(db,fname):
+    q1time = db["A"].find({"A1": {"$lte":50}}).explain()["executionStats"]["executionTimeMillis"]
+    with open(fname, "a") as f:
+        f.write(f"1, {q1time}\n")
     
-def query2(collectionB):
-    out = collectionB.aggregate([{"$sort":{"B3":1}}])
     
-    for x in out:
-        print(x)
 
-def query3(collectionB):
-    out = collectionB.aggregate([
+def query2(db,fname):
+    out = db["B"].aggregate([{"$sort":{"B3":1}}])
+    x = db.profiling_info()
+    with open(fname, "a") as f:
+        f.write(f"2, {x[-1]['millis']}\n")
+    
+
+
+def query3(db,fname):
+    out = db["B"].aggregate([
         {"$group": { "_id": "$B2", "myCount": { "$sum": 1 } }},
         {"$group": { "_id": None, "val": { "$avg": "$myCount" } }}
     ])
     
-    for x in out:
-        print(x)
+    x = db.profiling_info()
+    with open(fname, "a") as f:
+        f.write(f"3, {x[-1]['millis']}\n")
 
-def query4(db):
 
+def query4(db,fname):
     out = db["B"].aggregate([
         {
             "$lookup":{
@@ -63,6 +71,6 @@ def query4(db):
         },
         { "$project": { "B1":1,"B2":1,"B3":1,"A2":1  } }
     ])
-    
-    for x in out:
-        print(x)
+    x = db.profiling_info()
+    with open(fname, "a") as f:
+        f.write(f"4, {x[-1]['millis']}\n")
