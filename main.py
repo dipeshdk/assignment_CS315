@@ -21,8 +21,8 @@ databases = getDatabases(rollNumber)
     # runMongoDB(csvA, csvB, i)
 
 
-csvA, csvB = databases[4].strip("()").split(",")
+csvA, csvB = databases[0].strip("()").split(",")
 # print(csvA, csvB)
-runMongoDB(csvA, csvB, 4)
-# runsqlite3(csvA, csvB, 1)
+# runMongoDB(csvA, csvB, 4)
+runsqlite3(csvA, csvB, 0)
 # runMariaDB(csvA, csvB, 0)
