@@ -4,12 +4,10 @@ import csv
 DATABASE_PATH = "./Databases/"
 
 def connectMariaDB(db):
-    con = mariadb.connect(
-                        user="root",
+    con = mariadb.connect(user="root",
                         password = "",
                         host = "localhost",
                         port=3306)
-                        # database = db)
     cur = con.cursor()
     cur.execute(f"DROP DATABASE {db};")
     cur.execute(f"CREATE DATABASE {db};")

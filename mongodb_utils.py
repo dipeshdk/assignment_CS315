@@ -17,30 +17,52 @@ def csv_to_json(filename):
 def runMongoDB(csvA, csvB, i):
     dbname = "mongoDB" + str(i)
     db = connectMongoDB(dbname)
-    collectionA = db['A']
-    collectionB = db['B']
+    db["A"].drop()
+    db["B"].drop()
+    collectionA = db["A"]
+    collectionB = db["B"]
     collectionA.insert_many(csv_to_json(DATABASE_PATH+csvA))
     collectionB.insert_many(csv_to_json(DATABASE_PATH+csvB))
     query1(collectionA)
     query2(collectionB)
-    # query3(collectionB)
-    # query4(collectionA , collectionB)
+    query3(collectionB)
+    query4(db)
+
 
 def query1(collectionA):
-    out = collectionA.find({"A1": {"$lte":50}}).explain()["executionStats"]["executionTimeMillis"]
-    # for x in out:
-    print(out, type(out))
-
+    q1time = collectionA.find({"A1": {"$lte":50}}).explain()["executionStats"]["executionTimeMillis"]
+    
 def query2(collectionB):
-    out = collectionB.explain()["verbosity"].aggregate([{"$sort":{"B3":1}}])
-    print(out, type(out))
+    out = collectionB.aggregate([{"$sort":{"B3":1}}])
+    
+    for x in out:
+        print(x)
 
 def query3(collectionB):
-    out = collectionB.count()/collectionB.distinct("B2").count().explain()["executionStats"]["executionTimeMillis"]
+    out = collectionB.aggregate([
+        {"$group": { "_id": "$B2", "myCount": { "$sum": 1 } }},
+        {"$group": { "_id": None, "val": { "$avg": "$myCount" } }}
+    ])
+    
     for x in out:
-        print(x, type(x))
+        print(x)
 
-def query4(collectionA, collectionB):
-    out = collectionB.aggregate([{"$lookup" : {"from" : "A", "localField": "B2", "foreignField": "A1", "as": "q4"}}]).explain()["executionStats"]["executionTimeMillis"]
+def query4(db):
+
+    out = db["B"].aggregate([
+        {
+            "$lookup":{
+                "from": "A",
+                "localField" : "B2",
+                "foreignField" : "A1",
+                "as" : "q4"
+            }
+        },
+        {
+        "$replaceRoot": { "newRoot": { "$mergeObjects": [ { "$arrayElemAt": [ "$q4", 0 ] }, "$$ROOT" ] } }
+        },
+        { "$project": { "B1":1,"B2":1,"B3":1,"A2":1  } }
+    ])
+    
     for x in out:
         print(x)
