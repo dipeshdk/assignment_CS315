@@ -4,20 +4,19 @@ import csv
 DATABASE_PATH = "./Databases/"
 
 def connectMariaDB(db):
-    con = mariadb.connect(
-                        user="root",
+    con = mariadb.connect(user="root",
                         password = "",
                         host = "localhost",
                         port=3306)
-                        # database = db)
+
     cur = con.cursor()
-    cur.execute(f"DROP DATABASE {db};")
+    cur.execute(f"DROP DATABASE IF IF EXISTS {db};")
     cur.execute(f"CREATE DATABASE {db};")
-    cur.execute(f" USE {db};")
+    cur.execute(f"USE {db};")
     cur.execute("DROP TABLE IF EXISTS A;")
     cur.execute("DROP TABLE IF EXISTS B;")
-    cur.execute("CREATE TABLE A (A1 INTEGER PRIMARY KEY, A2 TEXT);")
-    cur.execute("CREATE TABLE B (B1 INTEGER PRIMARY KEY, B2 INTEGER, B3 TEXT, FOREIGN KEY (B2) REFERENCES A(A1) ON DELETE CASCADE)")
+    cur.execute("CREATE TABLE A (A1 INTEGER , A2 TEXT);")
+    cur.execute("CREATE TABLE B (B1 INTEGER , B2 INTEGER, B3 TEXT);")
     return cur,con
     
 
@@ -39,13 +38,14 @@ def loadcsvB(csvfile, cur, con):
     con.commit()
 
 
-def runMariaDB(csvA, csvB, i):
+def runMariaDbWithoutInd(csvA, csvB, i):
     db = "mariaDB" + str(i)
     cur, con = connectMariaDB(db)
     loadcsvA(csvA, cur, con)
     loadcsvB(csvB, cur, con)
     query1(cur,con)
     con.close()
+
 
 def query1(cur, con):
     cur.execute("SELECT * FROM A WHERE A1 <= 50;")

@@ -39,24 +39,5 @@ def runsqlite3(csvA, csvB, i):
     loadcsvA(csvA, cur, con)
     loadcsvB(csvB, cur, con)
     con.close()
-    os.popen(f"./run.sh {i} > test{i}.txt")
+    os.popen(f"./run.sh {i} > sqlite_output{i}.txt")
 
-
-# def query1(cur, con):
-#     cur.execute("SELECT * FROM A WHERE A1 <= 50;")
-#     cur.fetchall()
-# # db.A.find( {"A1": {"$lte:50"}});
-# def query2(cur, con):
-#     cur.execute("SELECT * FROM B ORDER BY B3;")
-#     cur.fetchall()
-# # db.B.aggregate([{$sort:{"B3":1}}])
-# def query3(cur, con):
-#     cur.execute("SELECT B2, COUNT(*)/COUNT(DISTINCT B2) FROM B GROUP BY B2;")
-#     cur.fetchall()
-# # 
-# def query4(cur, con):
-#     cur.execute("SELECT B1, B2, B3, A2 FROM A INNER JOIN B;")
-#     cur.fetchall()
-
-
-    
