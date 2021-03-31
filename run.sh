@@ -1,7 +1,7 @@
 #! /bin/bash
 
-sqlite3 /home/dipesh/Desktop/CS315A/assignment_CS315/sqliteDB$1 << EOF
+sqlite3 sqliteDB$1 << EOF
 .timer ON
-.output output$1.txt
-.read /home/dipesh/Desktop/CS315A/assignment_CS315/queries.sql
+.output sql_query_result$1.txt
+.read queries.sql
 EOF
