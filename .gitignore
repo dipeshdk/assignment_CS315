@@ -3,4 +3,5 @@ sqliteDB*
 
 __pycache__/
 test*.txt
+outputs/
 outputs/*
