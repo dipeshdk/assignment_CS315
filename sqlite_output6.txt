@@ -1,0 +1,4 @@
+Run Time: real 0.000 user 0.000779 sys 0.000000
+Run Time: real 0.058 user 0.048424 sys 0.008294
+Run Time: real 0.007 user 0.006665 sys 0.000000
+Run Time: real 0.022 user 0.022014 sys 0.000000

@@ -2,6 +2,7 @@ import sqlite3
 import csv
 import sys
 import os
+import time
 
 DATABASE_PATH = "./Databases/"
 
@@ -40,8 +41,7 @@ def runsqlite3(csvA, csvB, i):
     loadcsvA(csvA, cur, con)
     loadcsvB(csvB, cur, con)
     con.close()
-
-    os.popen(f"./run_sqlite_queries.sh {i} >> sqlite_output{i}.txt")
-    os.popen(f"rm -rf {db}")
-    os.popen(f"rm -rf sql_query_result{i}.txt")
+    os.popen(f"./run_sqlite_queries.sh {i} >> output_sqlite{i}.txt")
+    time.sleep(0.1)
+    os.popen(f"rm -rf sql_query_result{i}.txt {db}")
     print(f"database {db} and its temp files deleted. output time stored in sqlite_output{i}.txt")
