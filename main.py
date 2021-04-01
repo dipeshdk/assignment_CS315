@@ -9,17 +9,17 @@ from chooseDatabases import getDatabases
 rollNumber = [2,4,9]  # last 3 digits of your roll number 
 databases = getDatabases(rollNumber)
 
-# for i in range(len(databases)):
-#     csvA, csvB = databases[i].strip("()").split(",")
-#     # runsqlite3(csvA, csvB, i)
-#     runMariaDbWithoutInd(csvA, csvB, i)
-#     # runMariaDB(csvA, csvB, i)
-#     # runMongoDB(csvA, csvB, i)
-#     # time.sleep(0.1)
+for i in range(len(databases)):
+    csvA, csvB = databases[i].strip("()").split(",")
+    runsqlite3(csvA, csvB, i)
+    runMariaDbWithoutInd(csvA, csvB, i)
+    runMariaDB(csvA, csvB, i)
+    runMongoDB(csvA, csvB, i)
+    time.sleep(0.1)
 
 
-csvA, csvB = databases[8].strip("()").split(",")
-# # runMongoDB(csvA, csvB, 0)
-# runsqlite3(csvA, csvB, 8)
-runMariaDB(csvA, csvB, 8)
-# runMariaDbWithoutInd(csvA, csvB, 0)
+# csvA, csvB = databases[8].strip("()").split(",")
+# # # runMongoDB(csvA, csvB, 0)
+# # runsqlite3(csvA, csvB, 8)
+# runMariaDB(csvA, csvB, 8)
+# # runMariaDbWithoutInd(csvA, csvB, 0)

@@ -1,7 +1,8 @@
 import mariadb  
-import csv
+import pandas as pd
 
 DATABASE_PATH = "./Databases/"
+
 
 def connectMariaDB(db):
     con = mariadb.connect(user="root",
@@ -27,6 +28,7 @@ def loadcsvA(csvfile, cur, con):
     for row in df.itertuples():
         cur.execute("INSERT INTO A values (?, ?);", (row.A1, row.A2))
     con.commit()
+
     
 def loadcsvB(csvfile, cur, con):
     data = pd.read_csv(DATABASE_PATH+csvfile)

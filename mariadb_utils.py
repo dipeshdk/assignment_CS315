@@ -1,8 +1,8 @@
 import mariadb  
-import csv
 import pandas as pd
 
 DATABASE_PATH = "./Databases/"
+
 
 def connectMariaDB(db):
     con = mariadb.connect(user="root",
@@ -21,37 +21,22 @@ def connectMariaDB(db):
     cur.execute(f"SET profiling = 1;")
     con.commit()
     return cur,con
-    
+
+
 def loadcsvA(csvfile, cur, con):
     data = pd.read_csv(DATABASE_PATH+csvfile)
     df = pd.DataFrame(data, columns= ['A1', 'A2'])
     for row in df.itertuples():
         cur.execute("INSERT INTO A values (?, ?);", (row.A1, row.A2))
     con.commit()
-    
+
+
 def loadcsvB(csvfile, cur, con):
     data = pd.read_csv(DATABASE_PATH+csvfile)
     df = pd.DataFrame(data, columns= ['B1', 'B2', 'B3'])
     for row in df.itertuples(): 
         cur.execute('''INSERT INTO B values (?, ?, ?);''', (row.B1, row.B2, row.B3))
     con.commit()
-
-# def loadcsvA(csvfile, cur, con):
-#     with open(DATABASE_PATH+csvfile, 'r') as f:
-#         dr = csv.DictReader(f) 
-#         data = [(i['A1'], i['A2']) for i in dr]
-
-#     cur.executemany("INSERT INTO A values (?, ?);", data)
-#     con.commit()
-
-
-# def loadcsvB(csvfile, cur, con):
-#     with open(DATABASE_PATH+csvfile, 'r') as f:
-#         dr = csv.DictReader(f) 
-#         data = [(i['B1'], i['B2'], i['B3']) for i in dr]
-
-#     cur.executemany("INSERT INTO B values (?, ?, ?);", data)
-#     con.commit()
 
 
 def runMariaDB(csvA, csvB, i):
