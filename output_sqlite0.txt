@@ -2,3 +2,11 @@ Run Time: real 0.001 user 0.000336 sys 0.000000
 Run Time: real 0.000 user 0.000455 sys 0.000000
 Run Time: real 0.000 user 0.000189 sys 0.000000
 Run Time: real 0.001 user 0.000372 sys 0.000000
+Run Time: real 0.001 user 0.000824 sys 0.000000
+Run Time: real 0.002 user 0.001307 sys 0.000000
+Run Time: real 0.000 user 0.000584 sys 0.000000
+Run Time: real 0.002 user 0.001404 sys 0.000000
+Run Time: real 0.000 user 0.000000 sys 0.000282
+Run Time: real 0.001 user 0.000000 sys 0.000395
+Run Time: real 0.000 user 0.000000 sys 0.000163
+Run Time: real 0.000 user 0.000000 sys 0.000395
