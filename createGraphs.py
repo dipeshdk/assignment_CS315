@@ -82,8 +82,8 @@ def calcFinalTable(time_db):
             tmp.pop(0)
             tmp = tmp[:-1]
             # now take average of remaining elements
-            avg = st.mean(tmp)
-            stan_dev = st.stdev(tmp)
+            avg = round(st.mean(tmp) * 1000, 2)
+            stan_dev = round(st.stdev(tmp)*1000, 2)
             x = (avg,stan_dev)
             td.append(x)
         
@@ -97,27 +97,29 @@ finalTimeMaria = calcFinalTable(time_mariadb)
 finalTimeMariaWithoutInd = calcFinalTable(time_mariadbWithoutInd)
 
 
-def gen_y(timelist, querynum):
-    q = []
-    for dbno, iter in enumerate(timelist):
-        a,_ = iter[querynum]
-        q.append(a)
-    return q
+def genGraphPoints(timelist, querynum):
+    y = []
+    err = []
+    for iter in timelist:
+        a,b = iter[querynum]
+        y.append(a)
+        err.append(b)
+    return y, err
 
 
 def create_graph(querynum):
     x = [i+1 for i in range(dbnum)]
-    y = gen_y(finalTimeSqlite, querynum)
-    plt.plot(x,y, label = "sqlite3")
+    y, y_err = genGraphPoints(finalTimeSqlite, querynum)
+    plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
 
-    y = gen_y(finalTimeMongo, querynum)
-    plt.plot(x,y, label = "mongodb")
+    y, y_err = genGraphPoints(finalTimeMongo, querynum)
+    plt.errorbar(x, y, yerr = y_err, label = "mongodb")
 
-    y = gen_y(finalTimeMaria, querynum)
-    plt.plot(x,y, label = "mariadb")
+    y, y_err = genGraphPoints(finalTimeMaria, querynum)
+    plt.errorbar(x, y, yerr = y_err, label = "mariadb")
 
-    y = gen_y(finalTimeMariaWithoutInd, querynum)
-    plt.plot(x,y, label = "mariadb(without index)")
+    y, y_err = genGraphPoints(finalTimeMariaWithoutInd, querynum)
+    plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
 
     plt.xlabel("database number")
     plt.ylabel("time taken by the query(in ms)")
@@ -127,13 +129,30 @@ def create_graph(querynum):
     plt.show()
 
 
-create_graph(0)
-create_graph(1)
-create_graph(2)
-create_graph(3)
+row_format = "{:<10} {:<30}" + "{:>15}" * dbnum
+header = [i for i in range(1,10)]
+print(row_format.format("", "DBMS", *header))
+print("="*(10+30+(15*dbnum)+1))
 
-# use these lists to create graphs
-# query 1 -> time taken by each dbms in each database
-# basically 4 lines representing the 4 dbms
-# and x axis pe 9 databases
-# and y axis pe time
+def create_rows(querynum):
+    qSqlite = genGraphPoints(finalTimeSqlite,querynum)
+    qMaria = genGraphPoints(finalTimeMaria,querynum)
+    qMongo = genGraphPoints(finalTimeMongo,querynum)
+    qMariaWithoutInd = genGraphPoints(finalTimeMariaWithoutInd,querynum)
+       
+    print(row_format.format(f"query{querynum + 1}", "sqlite3", *qSqlite[0]))
+    print(row_format.format(f"query{querynum + 1}", "mariadb(without index)", *qMariaWithoutInd[0]))
+    print(row_format.format(f"query{querynum + 1}", "mariadb(with index)", *qMaria[0]))
+    print(row_format.format(f"query{querynum + 1}", "mongodb", *qMongo[0]))
+    print("-"*(10+30+(15*dbnum)+1))
+
+
+def create_table():
+    for i in range(4):
+        create_rows(i)
+
+
+create_table()
+
+for i in range(4):
+    create_graph(i)
