@@ -51,6 +51,7 @@ def runMariaDB(csvA, csvB, i):
     query3(cur, fname)
     query4(cur, fname)
     con.close()
+    print(f"Open {fname} for the time taken for running queries by mariaDB")
 
 
 def query1(cur, fname):

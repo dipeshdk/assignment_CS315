@@ -28,6 +28,7 @@ def runMongoDB(csvA, csvB, i):
     query2(db, fname)
     query3(db, fname)
     query4(db, fname)
+    print(f"Open {fname} for the time taken for running queries by mongoDB")
 
 
 def query1(db,fname):
@@ -41,16 +42,14 @@ def query2(db,fname):
     out = db["B"].aggregate([{"$sort":{"B3":1}}])
     x = db.profiling_info()
     with open(fname, "a") as f:
-        f.write(f"2, {x[-1]['millis']}\n")
-    
+        f.write(f"2, {x[-1]['millis']}\n")    
 
 
 def query3(db,fname):
     out = db["B"].aggregate([
-        {"$group": { "_id": "$B2", "myCount": { "$sum": 1 } }},
-        {"$group": { "_id": None, "val": { "$avg": "$myCount" } }}
+        {"$group": { "_id": "$B2", "countb2": { "$sum": 1 } }},
+        {"$group": { "_id": None, "result": { "$avg": "$countb2" } }}
     ])
-    
     x = db.profiling_info()
     with open(fname, "a") as f:
         f.write(f"3, {x[-1]['millis']}\n")
