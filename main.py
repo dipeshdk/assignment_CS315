@@ -19,7 +19,7 @@ for i in range(len(databases)):
 
 
 # csvA, csvB = databases[8].strip("()").split(",")
-# # # runMongoDB(csvA, csvB, 0)
-# # runsqlite3(csvA, csvB, 8)
+# runMongoDB(csvA, csvB, 8)
+# runsqlite3(csvA, csvB, 8)
 # runMariaDB(csvA, csvB, 8)
-# # runMariaDbWithoutInd(csvA, csvB, 0)
+# runMariaDbWithoutInd(csvA, csvB, 0)

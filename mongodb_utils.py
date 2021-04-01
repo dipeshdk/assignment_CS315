@@ -39,24 +39,24 @@ def query1(db,fname):
     
 
 def query2(db,fname):
-    out = db["B"].aggregate([{"$sort":{"B3":1}}])
+    out = db["B"].aggregate(pipeline=[{"$sort":{"B3":1}}],  allowDiskUse =  True )
     x = db.profiling_info()
     with open(fname, "a") as f:
         f.write(f"2, {x[-1]['millis']}\n")    
 
 
 def query3(db,fname):
-    out = db["B"].aggregate([
+    out = db["B"].aggregate(pipeline=[
         {"$group": { "_id": "$B2", "countb2": { "$sum": 1 } }},
         {"$group": { "_id": None, "result": { "$avg": "$countb2" } }}
-    ])
+    ], allowDiskUse = True)
     x = db.profiling_info()
     with open(fname, "a") as f:
         f.write(f"3, {x[-1]['millis']}\n")
 
 
 def query4(db,fname):
-    out = db["B"].aggregate([
+    out = db["B"].aggregate(pipeline=[
         {
             "$lookup":{
                 "from": "A",
@@ -69,7 +69,7 @@ def query4(db,fname):
         "$replaceRoot": { "newRoot": { "$mergeObjects": [ { "$arrayElemAt": [ "$q4", 0 ] }, "$$ROOT" ] } }
         },
         { "$project": { "B1":1,"B2":1,"B3":1,"A2":1  } }
-    ])
+    ], allowDiskUse = True)
     x = db.profiling_info()
     with open(fname, "a") as f:
         f.write(f"4, {x[-1]['millis']}\n")
