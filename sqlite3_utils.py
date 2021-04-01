@@ -40,7 +40,7 @@ def runsqlite3(csvA, csvB, i):
     loadcsvB(csvB, cur, con)
     con.close()
 
-    os.popen(f"./run.sh {i} >> sqlite_output{i}.txt")
+    os.popen(f"./run_sqlite_queries.sh {i} >> sqlite_output{i}.txt")
     os.popen(f"rm -rf {db}")
     os.popen(f"rm -rf sql_query_result{i}.txt")
     print(f"database {db} and its temp files deleted. output time stored in sqlite_output{i}.txt")
