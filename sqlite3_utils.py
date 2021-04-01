@@ -12,6 +12,7 @@ def connectSqlite3(db):
     cur.execute("DROP TABLE IF EXISTS B;")
     cur.execute("CREATE TABLE A (A1 INTEGER PRIMARY KEY, A2 TEXT);")
     cur.execute("CREATE TABLE B (B1 INTEGER PRIMARY KEY, B2 INTEGER, B3 TEXT, FOREIGN KEY (B2) REFERENCES A(A1) ON DELETE CASCADE);")
+    con.commit()
     return cur,con
     
 
