@@ -1,7 +1,7 @@
 import statistics as st
 import matplotlib.pyplot as plt
 
-dbnum = 6
+dbnum = 9
 
 time_mariadb = []
 time_mariadbWithoutInd = []
@@ -66,7 +66,7 @@ for i in range(dbnum):
     x = get_time_mongo(fname)
     time_mongodb.append(x)
 
-    fname = "sqlite_output" + str(i) + extension
+    fname = "output_sqlite" + str(i) + extension
     x = get_time_sqlite(fname)
     time_sqlite.append(x)
 
@@ -120,10 +120,10 @@ def create_graph(querynum):
     plt.plot(x,y, label = "mariadb(without index)")
 
     plt.xlabel("database number")
-    plt.ylabel("time taken by the query")
-    plt.title(f"query-{querynum} time analysis")
+    plt.ylabel("time taken by the query(in ms)")
+    plt.title(f"query-{querynum + 1} time analysis")
     plt.legend()
-    plt.savefig(f"query-{querynum} time analysis")
+    plt.savefig(f"query-{querynum + 1} time analysis")
     plt.show()
 
 
