@@ -82,8 +82,8 @@ def calcFinalTable(time_db):
             tmp.pop(0)
             tmp = tmp[:-1]
             # now take average of remaining elements
-            avg = round(st.mean(tmp) * 1000, 2)
-            stan_dev = round(st.stdev(tmp)*1000, 2)
+            avg = round(st.mean(tmp) * 1000, 5)
+            stan_dev = round(st.stdev(tmp)*1000, 5)
             x = (avg,stan_dev)
             td.append(x)
         
@@ -110,16 +110,19 @@ def genGraphPoints(timelist, querynum):
 def create_graph(querynum):
     x = [i+1 for i in range(dbnum)]
     y, y_err = genGraphPoints(finalTimeSqlite, querynum)
-    plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
-
+    # plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
+    plt.errorbar(x, y, label = "sqlite3")
     y, y_err = genGraphPoints(finalTimeMongo, querynum)
-    plt.errorbar(x, y, yerr = y_err, label = "mongodb")
+    # plt.errorbar(x, y, yerr = y_err, label = "mongodb")
+    plt.errorbar(x, y, label = "mongodb")
 
     y, y_err = genGraphPoints(finalTimeMaria, querynum)
-    plt.errorbar(x, y, yerr = y_err, label = "mariadb")
+    # plt.errorbar(x, y, yerr = y_err, label = "mariadb")
+    plt.errorbar(x, y, label = "mariadb")
 
     y, y_err = genGraphPoints(finalTimeMariaWithoutInd, querynum)
-    plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
+    # plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
+    plt.errorbar(x, y, label = "mariadb(without index)")
 
     plt.xlabel("database number")
     plt.ylabel("time taken by the query(in ms)")

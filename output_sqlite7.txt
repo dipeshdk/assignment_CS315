@@ -10,3 +10,15 @@ Run Time: real 0.001 user 0.000284 sys 0.000000
 Run Time: real 0.366 user 0.304380 sys 0.007952
 Run Time: real 0.036 user 0.032588 sys 0.004004
 Run Time: real 0.196 user 0.182509 sys 0.011919
+Run Time: real 0.001 user 0.000318 sys 0.000000
+Run Time: real 0.294 user 0.248598 sys 0.007957
+Run Time: real 0.034 user 0.034302 sys 0.000000
+Run Time: real 0.166 user 0.144838 sys 0.019902
+Run Time: real 0.000 user 0.000292 sys 0.000000
+Run Time: real 0.268 user 0.260099 sys 0.007944
+Run Time: real 0.037 user 0.033204 sys 0.004030
+Run Time: real 0.202 user 0.191809 sys 0.008157
+Run Time: real 0.000 user 0.000000 sys 0.000230
+Run Time: real 0.282 user 0.275191 sys 0.006141
+Run Time: real 0.048 user 0.043688 sys 0.003982
+Run Time: real 0.170 user 0.162123 sys 0.007918
