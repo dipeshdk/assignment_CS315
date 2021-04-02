@@ -111,24 +111,21 @@ def create_graph(querynum):
     x = [i+1 for i in range(dbnum)]
     y, y_err = genGraphPoints(finalTimeSqlite, querynum)
     plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
-    # plt.errorbar(x, y, label = "sqlite3")
+
     y, y_err = genGraphPoints(finalTimeMongo, querynum)
     plt.errorbar(x, y, yerr = y_err, label = "mongodb")
-    # plt.errorbar(x, y, label = "mongodb")
 
     y, y_err = genGraphPoints(finalTimeMaria, querynum)
     plt.errorbar(x, y, yerr = y_err, label = "mariadb")
-    # plt.errorbar(x, y, label = "mariadb")
 
     y, y_err = genGraphPoints(finalTimeMariaWithoutInd, querynum)
     plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
-    # plt.errorbar(x, y, label = "mariadb(without index)")
 
     plt.xlabel("database number")
     plt.ylabel("time taken by the query(in ms)")
     plt.title(f"query-{querynum + 1} time analysis")
     plt.legend()
-    plt.savefig(f"query-{querynum + 1} time analysis(cache disabled in mariadb)8db")
+    plt.savefig(f"query-{querynum + 1} time analysis(cache disabled in mariadb)")
     plt.show()
 
 
@@ -155,9 +152,11 @@ def create_table(id):
     for i in range(4):
         create_rows(i,id)
 
-
+# print mean time table
 create_table(0)
+# print standard deviation table
 create_table(1)
 
-# for i in range(4):
-#     create_graph(i)
+# create all the 4 graphs
+for i in range(4):
+    create_graph(i)

@@ -19,6 +19,7 @@ for i in range(len(databases)):
     time.sleep(0.1)
 
 
+# code for running the query on single database or single DBMS
 # csvA, csvB = databases[0].strip("()").split(",")
 # # # runMongoDB(csvA, csvB, 8)
 # # runsqlite3(csvA, csvB, 0)
