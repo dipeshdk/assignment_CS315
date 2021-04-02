@@ -13,6 +13,8 @@ def connectMariaDB(db):
     cur.execute(f"DROP DATABASE IF EXISTS {db};")
     cur.execute(f"CREATE DATABASE {db};")
     cur.execute(f"USE {db};")
+    cur.execute("SET GLOBAL query_cache_type = 0")
+    cur.execute("SET GLOBAL query_cache_size = 0")
     cur.execute("DROP TABLE IF EXISTS A;")
     cur.execute("DROP TABLE IF EXISTS B;")
     cur.execute("CREATE TABLE A (A1 INTEGER, A2 TEXT);")

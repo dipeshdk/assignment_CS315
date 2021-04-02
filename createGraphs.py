@@ -82,8 +82,8 @@ def calcFinalTable(time_db):
             tmp.pop(0)
             tmp = tmp[:-1]
             # now take average of remaining elements
-            avg = round(st.mean(tmp) * 1000, 5)
-            stan_dev = round(st.stdev(tmp)*1000, 5)
+            avg = round(st.mean(tmp) * 1000, 2)
+            stan_dev = round(st.stdev(tmp)*1000, 2)
             x = (avg,stan_dev)
             td.append(x)
         
@@ -110,52 +110,54 @@ def genGraphPoints(timelist, querynum):
 def create_graph(querynum):
     x = [i+1 for i in range(dbnum)]
     y, y_err = genGraphPoints(finalTimeSqlite, querynum)
-    # plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
-    plt.errorbar(x, y, label = "sqlite3")
+    plt.errorbar(x, y, yerr = y_err, label = "sqlite3")
+    # plt.errorbar(x, y, label = "sqlite3")
     y, y_err = genGraphPoints(finalTimeMongo, querynum)
-    # plt.errorbar(x, y, yerr = y_err, label = "mongodb")
-    plt.errorbar(x, y, label = "mongodb")
+    plt.errorbar(x, y, yerr = y_err, label = "mongodb")
+    # plt.errorbar(x, y, label = "mongodb")
 
     y, y_err = genGraphPoints(finalTimeMaria, querynum)
-    # plt.errorbar(x, y, yerr = y_err, label = "mariadb")
-    plt.errorbar(x, y, label = "mariadb")
+    plt.errorbar(x, y, yerr = y_err, label = "mariadb")
+    # plt.errorbar(x, y, label = "mariadb")
 
     y, y_err = genGraphPoints(finalTimeMariaWithoutInd, querynum)
-    # plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
-    plt.errorbar(x, y, label = "mariadb(without index)")
+    plt.errorbar(x, y, yerr = y_err, label = "mariadb(without index)")
+    # plt.errorbar(x, y, label = "mariadb(without index)")
 
     plt.xlabel("database number")
     plt.ylabel("time taken by the query(in ms)")
     plt.title(f"query-{querynum + 1} time analysis")
     plt.legend()
-    plt.savefig(f"query-{querynum + 1} time analysis")
+    plt.savefig(f"query-{querynum + 1} time analysis(cache disabled in mariadb)8db")
     plt.show()
 
 
-row_format = "{:<10} {:<30}" + "{:>15}" * dbnum
+row_format = "{:<10} {:<25}" + "{:>10}" * dbnum
 header = [i for i in range(1,10)]
-print(row_format.format("", "DBMS", *header))
-print("="*(10+30+(15*dbnum)+1))
 
-def create_rows(querynum):
+def create_rows(querynum, id):
     qSqlite = genGraphPoints(finalTimeSqlite,querynum)
     qMaria = genGraphPoints(finalTimeMaria,querynum)
     qMongo = genGraphPoints(finalTimeMongo,querynum)
     qMariaWithoutInd = genGraphPoints(finalTimeMariaWithoutInd,querynum)
        
-    print(row_format.format(f"query{querynum + 1}", "sqlite3", *qSqlite[0]))
-    print(row_format.format(f"query{querynum + 1}", "mariadb(without index)", *qMariaWithoutInd[0]))
-    print(row_format.format(f"query{querynum + 1}", "mariadb(with index)", *qMaria[0]))
-    print(row_format.format(f"query{querynum + 1}", "mongodb", *qMongo[0]))
-    print("-"*(10+30+(15*dbnum)+1))
+    print(row_format.format(f"query{querynum + 1}", "sqlite3", *qSqlite[id]))
+    print(row_format.format(f"query{querynum + 1}", "mariadb(without index)", *qMariaWithoutInd[id]))
+    print(row_format.format(f"query{querynum + 1}", "mariadb(with index)", *qMaria[id]))
+    print(row_format.format(f"query{querynum + 1}", "mongodb", *qMongo[id]))
+    print("-"*(10+25+(10*dbnum)+1))
 
 
-def create_table():
+def create_table(id):
+    print(row_format.format("", "DBMS", *header))
+    print("="*(10+25+(10*dbnum)+1))
+
     for i in range(4):
-        create_rows(i)
+        create_rows(i,id)
 
 
-create_table()
+create_table(0)
+create_table(1)
 
-for i in range(4):
-    create_graph(i)
+# for i in range(4):
+#     create_graph(i)
